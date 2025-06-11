@@ -20,8 +20,8 @@ class UserController
   function __construct()
   {
 
-    $servername = "nextplay-nextplay.l.aivencloud.com:11948";
-    $username = "avnadmin";
+    $servername = "localhost";
+    $username = "root";
     $password = "";
     $dbname = "nextplay";
 
@@ -132,6 +132,7 @@ class UserController
   {
     // Retrieve form data from POST request
     $username = $_POST['username'];
+    $surname = $_POST['surname'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $repeat_password = $_POST['repeat_password'];
@@ -174,8 +175,8 @@ class UserController
     }
 
     // Inserción en la base de datos
-    $stmt = $this->conn->prepare("INSERT INTO $tabla (nombre, correo, contrasena) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $username, $email, $password);
+    $stmt = $this->conn->prepare("INSERT INTO $tabla (nombre, surname, correo, contrasena) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $username, $surname, $email, $password);
 
     if ($stmt->execute()) {
       // Obtener el ID del nuevo usuario
@@ -186,6 +187,7 @@ class UserController
       $_SESSION['user'] = [
         "id_usuario" => $id_usuario,
         "nombre" => $username,
+        "surname" => $surname,
         "email" => $email,
         "contrasena" => $password,
         'estadisticas' => [],
