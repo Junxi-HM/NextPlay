@@ -28,8 +28,8 @@ class UserController
   private $conn;
   function __construct()
   {
-    $servername = "nextplay-nextplay.l.aivencloud.com:11948";
-    $username = "avnadmin";
+    $servername = "localhost";
+    $username = "root";
     $password = "";
     $dbname = "nextplay";
 
@@ -114,6 +114,7 @@ class UserController
 
     $rol = $_POST['rol'];
     $username = htmlspecialchars($_POST['username']);
+    $surname = htmlspecialchars($_POST['surname']);
     $email = htmlspecialchars($_POST['email']);
 
     if ($rol === "usuario") {
@@ -144,9 +145,10 @@ class UserController
     }
 
     try {
-      $stmt = $this->conn->prepare("INSERT INTO $tabla (nombre, correo, contrasena) VALUES (:username, :email, :password)");
+      $stmt = $this->conn->prepare("INSERT INTO $tabla (nombre, surname, correo, contrasena) VALUES (:username, :surname, :email, :password)");
       $stmt->execute([
         'username' => $username,
+        'surname' => $surname,
         'email' => $email,
         'password' => $password
       ]);
@@ -159,6 +161,7 @@ class UserController
         // Para usuarios normales
         $_SESSION['user'] = [
           "nombre" => $username,
+          'surname' => $surname,
           "email" => $email,
           "contrasena" => $password
         ];
