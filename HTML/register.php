@@ -54,7 +54,7 @@
               <div class="input-container">
                 <img src="../imagenes/user-icon.png" alt="User Icon">
               </div>
-              <input type="text" name="surname" required placeholder="Enter your surname">
+              <input type="number" name="phoneNumber" required placeholder="Enter your phone Number">
             </label>
             <label>
               <div class="input-container">

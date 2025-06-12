@@ -55,10 +55,10 @@ class UserController
     $username = $_POST['username'];
     $passwd = $_POST['password'];
 
-    $stmt = $this->conn->prepare(query: "SELECT id_usuario, nombre, correo, contrasena, estadisticas, img FROM usuarios WHERE nombre = ? AND contrasena = ?");
+    $stmt = $this->conn->prepare(query: "SELECT id_usuario, nombre, phoneNumber, correo, contrasena, estadisticas, img FROM usuarios WHERE nombre = ? AND contrasena = ?");
     $stmt->bind_param("ss", $username, $passwd);
     $stmt->execute();
-    $stmt->bind_result($id_usuario, $nombre, $email, $contrasena, $estadisticas, $img);
+    $stmt->bind_result($id_usuario, $nombre, $phoneNumber, $email, $contrasena, $estadisticas, $img);
 
     //SI EL INICIO DE SESIÓN DE USUARIOS SE LOGRÓ:
     if ($stmt->fetch()) {
@@ -66,6 +66,7 @@ class UserController
       $_SESSION['user'] = [
         "id_usuario" => $id_usuario,
         "nombre" => $nombre,
+        "phoneNumber" => $phoneNumber,
         "email" => $email,
         "contrasena" => $contrasena,
         'estadisticas' => $estadisticas,
@@ -132,7 +133,7 @@ class UserController
   {
     // Retrieve form data from POST request
     $username = $_POST['username'];
-    $surname = $_POST['surname'];
+    $phoneNumber = $_POST['phoneNumber'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $repeat_password = $_POST['repeat_password'];
@@ -147,6 +148,12 @@ class UserController
     //VERIFICAR LA CONTRASEÑÄ
     if (!preg_match('/^(?=.*[A-Z])(?=.*\d).{8,}$/', $password)) {
       $_SESSION['error'] = "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.";
+      header("Location: ../HTML/register.php");
+      exit();
+    }
+    
+    if (!preg_match('#(\D|\b)([\d]{11})(\D|\b)#', $phoneNumber)) {
+      $_SESSION['error'] = "El telefon debe tener 11 caracteres.";
       header("Location: ../HTML/register.php");
       exit();
     }
@@ -175,8 +182,8 @@ class UserController
     }
 
     // Inserción en la base de datos
-    $stmt = $this->conn->prepare("INSERT INTO $tabla (nombre, surname, correo, contrasena) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $username, $surname, $email, $password);
+    $stmt = $this->conn->prepare("INSERT INTO $tabla (nombre, phoneNumber, correo, contrasena) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $username, $phoneNumber, $email, $password);
 
     if ($stmt->execute()) {
       // Obtener el ID del nuevo usuario
@@ -187,7 +194,7 @@ class UserController
       $_SESSION['user'] = [
         "id_usuario" => $id_usuario,
         "nombre" => $username,
-        "surname" => $surname,
+        "phoneNumber" => $phoneNumber,
         "email" => $email,
         "contrasena" => $password,
         'estadisticas' => [],

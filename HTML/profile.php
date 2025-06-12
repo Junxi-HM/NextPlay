@@ -216,6 +216,17 @@ $juegosInteresados = $controller->getUserInterestedGames();
                       </div>
                     </div>
 
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                          <label for="phoneNumber" class="form-label">
+                            <i class="fas fa-envelope"></i> Phone
+                          </label>
+                          <input type="number" class="form-control" name="phoneNumber" id="phoneNumber"
+                            value="<?php echo $_SESSION['user']['phoneNumber']; ?>">
+                        </div>
+                      </div>
+                    </div>
+
                     <!--<div class="row">
                       <div class="col-md-6 mb-3">
                         <div class="form-group">

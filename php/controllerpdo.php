@@ -114,7 +114,7 @@ class UserController
 
     $rol = $_POST['rol'];
     $username = htmlspecialchars($_POST['username']);
-    $surname = htmlspecialchars($_POST['surname']);
+    $phoneNumber = $_POST['phoneNumber'];
     $email = htmlspecialchars($_POST['email']);
 
     if ($rol === "usuario") {
@@ -145,10 +145,10 @@ class UserController
     }
 
     try {
-      $stmt = $this->conn->prepare("INSERT INTO $tabla (nombre, surname, correo, contrasena) VALUES (:username, :surname, :email, :password)");
+      $stmt = $this->conn->prepare("INSERT INTO $tabla (nombre, phoneNumber, correo, contrasena) VALUES (:username, :phone, :email, :password)");
       $stmt->execute([
         'username' => $username,
-        'surname' => $surname,
+        'phoneNumber' => $phoneNumber,
         'email' => $email,
         'password' => $password
       ]);
@@ -161,7 +161,7 @@ class UserController
         // Para usuarios normales
         $_SESSION['user'] = [
           "nombre" => $username,
-          'surname' => $surname,
+          'phoneNumber' => $phoneNumber,
           "email" => $email,
           "contrasena" => $password
         ];
